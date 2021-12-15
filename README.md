@@ -6,9 +6,10 @@
   * Localization/Detection은 Bounding box regression(box 좌표값 예측)과 Classification 두개의 문제가 합쳐져 있음
 - 영역 추정(Region Proposal) : 객체가 있을만한 곳을 추정, 바운딩 박스 전에
 - Segmentation : Pixel단위로 객체 검출
-- Annotation : 
+- Annotation : 정보를 담고 있는 파일
 - GT(Ground Truth) : 우리가 정한 정답
 - SPP(Spatial pyramid Pooling) : Image classification에서 서로 다른 이미지의 크기를 고정된 크기로 변환하는 기법, conv와 dense layer를 유연하게 연결
+- Anchor Box : object가 있는지 없는지의 후보 Box
 
 ## Object Detection
 - 방식
@@ -45,3 +46,14 @@
 - Ground Truth로만 학습, Background도 학습
 - 동시대의 다른 알고리즘에 비해 매우 높은 Detection 정확도
 - 너무 느린 시간과 복잡한 아키텍처 및 학습 프로세스
+## Fast R-CNN
+- 2000개의 이미지 각각 CNN을 시키는 R-CNN의 단점을 보완하고자 맵핑하여 한번에 CNN을 수행
+- SPP Layer를 ROI pooling로, SVM을 softmax로
+ - ROI pooling : 
+- Multi-task loss 함수로 Classification과 Regression
+## Faster R-CNN
+- selective search를 딥러닝 네트워크에 옮김 -> RPN
+ - RPN Regression은 GT와 예측 Bbox의 중심좌표 차이가 Anchor box와 GT간의 차이와 최대한 동일하게 예측 될 수 있어야함
+- 두드러지는 Anchor Box를 loss기반으로 학습해서 위치를 찾아냄
+ - 총 9개의 서로 다른 3개 크기, 서로 다른 3개 ratio로 구성된 Anchor Box
+- IOU가 0.7 이상이면 Positive, 0.3 미만은 Negative, 사이 값은 학습X
